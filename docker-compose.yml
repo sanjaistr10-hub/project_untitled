@@ -1,0 +1,30 @@
+# Local infrastructure for development. Start with: docker compose up -d
+#   Postgres  -> localhost:5432  (databases project_untitled + project_untitled_test)
+#   Mailpit   -> SMTP localhost:1025, inbox UI http://localhost:8025
+# No Docker? Install Postgres 17 and run ./scripts/db-setup.sh instead.
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: project_untitled
+      POSTGRES_PASSWORD: project_untitled
+      POSTGRES_DB: project_untitled
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./scripts/docker/init-test-db.sql:/docker-entrypoint-initdb.d/10-test-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U project_untitled"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  pgdata:

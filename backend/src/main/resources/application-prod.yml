@@ -1,0 +1,26 @@
+# Production: every secret comes from the environment. Startup fails if one is missing.
+app:
+  frontend:
+    app-url: ${APP_FRONTEND_URL}
+    member-site-url-template: ${APP_MEMBER_SITE_URL_TEMPLATE}
+  security:
+    jwt-secret: ${APP_JWT_SECRET}
+    cookie-secure: true
+  otp:
+    hash-secret: ${APP_OTP_SECRET}
+  mail:
+    delivery: smtp
+    from-address: ${APP_MAIL_FROM}
+
+spring:
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+server:
+  forward-headers-strategy: framework

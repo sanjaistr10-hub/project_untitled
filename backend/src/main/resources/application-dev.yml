@@ -1,0 +1,20 @@
+# Local development defaults. Never deploy with these secrets.
+app:
+  security:
+    jwt-secret: dev-only-jwt-secret-change-me-0123456789abcdef
+    cookie-secure: false # localhost is plain http
+  otp:
+    hash-secret: dev-only-otp-secret-change-me-0123456789abcdef
+  mail:
+    # Codes are printed to this console. Set to smtp (and run `docker compose up -d mailpit`)
+    # to see real emails at http://localhost:8025
+    delivery: ${APP_MAIL_DELIVERY:log}
+
+spring:
+  mail:
+    host: localhost
+    port: 1025
+
+logging:
+  level:
+    com.projectuntitled: DEBUG
